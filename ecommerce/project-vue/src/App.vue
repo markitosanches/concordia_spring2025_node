@@ -44,7 +44,7 @@
 <script>
 import MainFooter from './components/MainFooter.vue'
 import SideBar from './components/SideBar.vue'
-import products from './products.json'
+import ProductDataService from '@/services/ProductDataService'
 
 export default {
   components: {
@@ -54,7 +54,7 @@ export default {
   data () {
     return {
       showSideBar: false,
-      inventory: products,
+      inventory: [],
       cart: {}
     }
   },
@@ -76,6 +76,15 @@ export default {
         return acc + cur
       }, 0)
     }
+  },
+  mounted () {
+    ProductDataService.getAll()
+      .then(response => {
+        this.inventory = response.data
+      })
+      .catch(error => {
+        console.log('Error fetching data', error)
+      })
   }
 }
 </script>
